@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mariadb:12
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    restart: always
+
+  wordpress:
+    image: ghcr.io/aqunex-dev/wordpress:latest
+
+    volumes:
+      - wp_data:/var/www/html
+      - nginx_cache:/var/cache/nginx
+    networks:
+      - wordpress
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    depends_on:
+      - db
+    restart: always
+
+networks:
+  wordpress:
+    name: wordpress
+
+volumes:
+  wp_data:
+  db_data:
+  nginx_cache:
