@@ -1,4 +1,4 @@
-FROM php:8.5-fpm-alpine
+FROM php:8.5.12-fpm-alpine
 
 ARG WORDPRESS_VERSION=7.1
 
